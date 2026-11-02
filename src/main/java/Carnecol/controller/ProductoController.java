@@ -29,10 +29,16 @@ model.addAttribute("productos", listaProductos);
     return "productos";
 }
 
-    // Guarda un producto en la base de datos
-    @PostMapping("/productos")
-    public String guardarProducto(Producto producto) {
-        productoRepository.save(producto);
+   @PostMapping("/productos")
+public String guardarProducto(Producto producto) {
+
+    if (producto.getPrecio() == null || producto.getPrecio() < 0 ||
+        producto.getStock() == null || producto.getStock() < 0) {
+
         return "redirect:/productos";
     }
+
+    productoRepository.save(producto);
+    return "redirect:/productos";
+}
 }

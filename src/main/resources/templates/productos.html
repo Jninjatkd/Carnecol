@@ -4,66 +4,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar productos - Carnecol</title>
+    <title>Carnecol | Gestión de productos</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f5f7;
+            color: #333;
+        }
+
+        header {
+            background: #a71920;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 7px 0 0;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #a71920;
+            font-size: 22px;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #d5d5d5;
+            border-radius: 7px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #a71920;
+            box-shadow: 0 0 0 2px rgba(167,25,32,0.1);
+        }
+
+        .completo {
+            grid-column: 1 / -1;
+        }
+
+        button {
+            background: #a71920;
+            color: white;
+            border: none;
+            padding: 13px 22px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #801218;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #a71920;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody tr:hover {
+            background: #fff3f3;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        @media (max-width: 650px) {
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .completo {
+                grid-column: auto;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Carnecol</h1>
-    <h2>Registrar productos</h2>
+<header>
+    <h1>CARNECOL</h1>
+    <p>Sistema de gestión de productos</p>
+</header>
 
-    <!-- Formulario para registrar productos -->
-    <form action="/productos" method="post">
+<main>
 
-        <label>Nombre del producto:</label>
-        <input type="text" name="nombre" required>
-        <br><br>
+    <section class="panel">
+        <h2>Registrar producto</h2>
 
-        <label>Categoría:</label>
-        <input type="text" name="categoria" required>
-        <br><br>
+        <form action="/productos" method="post">
+            <div class="formulario">
 
-        <label>Precio:</label>
-        <input type="number" name="precio" step="0.01" required>
-        <br><br>
+                <div class="campo">
+                    <label>Nombre del producto:</label>
+                    <input type="text" name="nombre"
+                           maxlength="100" required>
+                </div>
 
-        <label>Stock:</label>
-        <input type="number" name="stock" required>
-        <br><br>
+                <div class="campo">
+                    <label>Categoría:</label>
+                    <input type="text" name="categoria"
+                           maxlength="50" required>
+                </div>
 
-        <label>Descripción:</label>
-        <input type="text" name="descripcion">
-        <br><br>
+                <div class="campo">
+                    <label>Precio:</label>
+                    <input type="number" name="precio"
+                           min="0" step="0.01" required>
+                </div>
 
-        <button type="submit">Guardar producto</button>
+                <div class="campo">
+                    <label>Stock:</label>
+                    <input type="number" name="stock"
+                           min="0" step="1" required>
+                </div>
 
-    </form>
+                <div class="campo completo">
+                    <label>Descripción:</label>
+                    <input type="text" name="descripcion"
+                           maxlength="255">
+                </div>
 
-    <!-- Tabla de productos registrados -->
-    <h2>Productos registrados</h2>
+                <div class="completo">
+                    <button type="submit">Guardar producto</button>
+                </div>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th>Descripción</th>
-            </tr>
-        </thead>
+            </div>
+        </form>
+    </section>
 
-        <tbody>
-    <tr th:each="producto : ${productos}">
-        <td th:text="${producto.idProducto}"></td>
-        <td th:text="${producto.nombre}"></td>
-        <td th:text="${producto.categoria}"></td>
-        <td th:text="${producto.precio}"></td>
-        <td th:text="${producto.stock}"></td>
-        <td th:text="${producto.descripcion}"></td>
-    </tr>
-</tbody>
-    </table>
+    <section class="panel">
+        <h2>Productos registrados</h2>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="producto : ${productos}">
+                        <td th:text="${producto.idProducto}"></td>
+                        <td th:text="${producto.nombre}"></td>
+                        <td th:text="${producto.categoria}"></td>
+                        <td th:text="${producto.precio}"></td>
+                        <td th:text="${producto.stock}"></td>
+                        <td th:text="${producto.descripcion}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    Carnecol Colombia | Gestión de productos
+</footer>
 
 </body>
 </html>
+
